@@ -1,9 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package com.silk.view;
 
+import com.silk.controller.algorithms.BinarySearch;
+import com.silk.controller.algorithms.SelectionSort;
+import com.silk.controller.algorithms.InsertionSort;
+import com.silk.controller.algorithms.MergeSort;
 import com.silk.model.IceCreamModel;
 import com.silk.util.ValidationUtil;
 import java.util.LinkedList;
@@ -23,6 +24,10 @@ public class Silk extends javax.swing.JFrame {
     private java.awt.CardLayout cardLayout;
     private final Color errorColor = new Color(255, 51, 0);
     private final Color yellowColor = new Color(239, 192, 32);
+    private final SelectionSort selectionSort;
+    private final InsertionSort insertionSort;
+    private final MergeSort mergeSort;
+    private final BinarySearch binarySearch; 
     /**
      * Creates new form Silk
      */
@@ -31,6 +36,10 @@ public class Silk extends javax.swing.JFrame {
         initializeLayout();
         initializeData();
         startProgress();
+        selectionSort = new SelectionSort();
+        insertionSort = new InsertionSort();
+        mergeSort = new MergeSort();
+        binarySearch = new BinarySearch();
     }
 
     /**
@@ -147,6 +156,11 @@ public class Silk extends javax.swing.JFrame {
         lblErrorMsgAllergens = new javax.swing.JLabel();
         lblErrorMsgSpecialNotes = new javax.swing.JLabel();
         lblFeedbackUpdate = new javax.swing.JLabel();
+        cbSortByID = new javax.swing.JComboBox<>();
+        cbSortByFlavourName = new javax.swing.JComboBox<>();
+        cbSortByStockQuantity = new javax.swing.JComboBox<>();
+        btnSearch = new javax.swing.JButton();
+        tfSearch = new javax.swing.JTextField();
         pnlLoginScreen = new javax.swing.JPanel();
         pnlSplitLogin = new javax.swing.JPanel();
         lblLoginLogo = new javax.swing.JLabel();
@@ -1009,6 +1023,7 @@ public class Silk extends javax.swing.JFrame {
         pnlAdmin.setSize(new java.awt.Dimension(1340, 679));
 
         tblIceCream.setBackground(new java.awt.Color(158, 114, 77));
+        tblIceCream.setFont(new java.awt.Font("ITF Devanagari Marathi", 0, 13)); // NOI18N
         tblIceCream.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -1028,6 +1043,7 @@ public class Silk extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tblIceCream.setGridColor(new java.awt.Color(102, 51, 0));
         tblIceCream.setSize(new java.awt.Dimension(1230, 235));
         jScrollPane1.setViewportView(tblIceCream);
 
@@ -1116,6 +1132,22 @@ public class Silk extends javax.swing.JFrame {
         lblFeedbackDelete.setBackground(new java.awt.Color(158, 114, 77));
         lblFeedbackDelete.setForeground(new java.awt.Color(153, 0, 0));
 
+        lblErrorMsgId.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgFlavorName.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgAvailability.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgStockQuantity.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgPricePerScoop.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgCaloriePerScoop.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgAllergens.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
+        lblErrorMsgSpecialNotes.setFont(new java.awt.Font("Helvetica Neue", 0, 10)); // NOI18N
+
         lblFeedbackUpdate.setForeground(new java.awt.Color(153, 0, 0));
 
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
@@ -1137,7 +1169,7 @@ public class Silk extends javax.swing.JFrame {
                 .addComponent(lblFeedbackDelete)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlFormLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(39, 39, 39)
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblErrorMsgId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1172,7 +1204,7 @@ public class Silk extends javax.swing.JFrame {
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblErrorMsgSpecialNotes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfSpecialNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addGap(334, 334, 334)
                 .addComponent(lblFeedbackUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1182,15 +1214,16 @@ public class Silk extends javax.swing.JFrame {
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfStockQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfPricePerScoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfAllergens, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfFlavourName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfAvailability, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfCaloriePerScoop, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfSpecialNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfSpecialNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tfStockQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfPricePerScoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfAllergens, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFormLayout.createSequentialGroup()
@@ -1221,27 +1254,77 @@ public class Silk extends javax.swing.JFrame {
                 .addGap(32, 32, 32))
         );
 
+        cbSortByID.setBackground(new java.awt.Color(216, 210, 195));
+        cbSortByID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort By ID", "Ascending ", "Descending", " " }));
+        cbSortByID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSortByIDActionPerformed(evt);
+            }
+        });
+
+        cbSortByFlavourName.setBackground(new java.awt.Color(216, 210, 195));
+        cbSortByFlavourName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Flavour Name", "Ascending ", "Descending " }));
+        cbSortByFlavourName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSortByFlavourNameActionPerformed(evt);
+            }
+        });
+
+        cbSortByStockQuantity.setBackground(new java.awt.Color(216, 210, 195));
+        cbSortByStockQuantity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort By Stock Quantity ", "Ascending", "Descending", " " }));
+        cbSortByStockQuantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSortByStockQuantityActionPerformed(evt);
+            }
+        });
+
+        btnSearch.setBackground(new java.awt.Color(216, 210, 195));
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        tfSearch.setBackground(new java.awt.Color(216, 210, 195));
+
         javax.swing.GroupLayout pnlAdminLayout = new javax.swing.GroupLayout(pnlAdmin);
         pnlAdmin.setLayout(pnlAdminLayout);
         pnlAdminLayout.setHorizontalGroup(
             pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAdminLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbltblTitleIceCream)
-                    .addGroup(pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
-                        .addComponent(pnlForm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1240, Short.MAX_VALUE)))
+                .addGroup(pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlAdminLayout.createSequentialGroup()
+                        .addComponent(lbltblTitleIceCream)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearch)
+                        .addGap(71, 71, 71)
+                        .addComponent(cbSortByID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbSortByFlavourName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbSortByStockQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(pnlForm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1240, Short.MAX_VALUE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         pnlAdminLayout.setVerticalGroup(
             pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAdminLayout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(lbltblTitleIceCream, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addGroup(pnlAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbltblTitleIceCream, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbSortByID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbSortByFlavourName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbSortByStockQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch)
+                    .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -1448,6 +1531,12 @@ public class Silk extends javax.swing.JFrame {
     private void initializeData() {
         IceCreamList = new LinkedList<>();
         
+        registerIceCream(new IceCreamModel(5,"Mint Chips","available",30,290,350,"Contains Dairy","none"));
+        registerIceCream(new IceCreamModel(1,"Mango Sorbet","available",20,250,300,"none","Vegan Friendly"));
+        registerIceCream(new IceCreamModel(4,"Wild Blueberry"," not available",0,290,320,"none","none"));
+        registerIceCream(new IceCreamModel(3,"Raspberry Sorbet","not available",0,250,300,"none","Vegan Friendly"));
+        registerIceCream(new IceCreamModel(2,"Mango Sorbet","available",150,250,300,"none","Vegan Friendly"));
+        registerIceCream(new IceCreamModel(6,"Cookies and Cream","available",40,290,350,"none","none"));
     }
     
     private void startProgress() {
@@ -1491,7 +1580,6 @@ public class Silk extends javax.swing.JFrame {
     }
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
         String username = tfUsername.getText();
         String password = new String(pfPassword.getPassword());
 
@@ -1509,7 +1597,6 @@ public class Silk extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCLEARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCLEARActionPerformed
-        // TODO add your handling code here:
         tfID.setText("");
         tfFlavourName.setText("");
         tfAvailability.setText("");
@@ -1521,7 +1608,6 @@ public class Silk extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCLEARActionPerformed
 
     private void btnDELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDELETEActionPerformed
-        // TODO add your handling code here:
         lblFeedbackDelete.setText("");
         try {
                     int silkId = Integer.parseInt(tfID.getText().trim());
@@ -1549,7 +1635,6 @@ public class Silk extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDELETEActionPerformed
 
     private void btnUPDATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUPDATEActionPerformed
-        // TODO add your handling code here:
         lblFeedbackUpdate.setText("");
 
     try {
@@ -1756,11 +1841,105 @@ public class Silk extends javax.swing.JFrame {
     }
     
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
-        // TODO add your handling code here:
         tfUsername.setText("");
         pfPassword.setText("");
         loadScreen("LoginScreen");
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void cbSortByIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSortByIDActionPerformed
+        int value = cbSortByID.getSelectedIndex();
+    // Sorted list to hold the result
+    List<IceCreamModel> sortedList;
+    
+    // Check the selected value and sort accordingly
+    if (value == 1) { // Ascending order
+        sortedList = selectionSort.sortBySilkId(IceCreamList, false); // false for ascending
+        loadListToTable(sortedList); // Load sorted list into the table
+        } else if (value == 2) { // Descending order
+        sortedList = selectionSort.sortBySilkId(IceCreamList, true); // true for descending
+        loadListToTable(sortedList); // Load sorted list into the table
+        }
+    }//GEN-LAST:event_cbSortByIDActionPerformed
+
+    private void cbSortByFlavourNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSortByFlavourNameActionPerformed
+        // Get the selected index from the combo box
+    int value = cbSortByFlavourName.getSelectedIndex();
+    
+    // Sorted list to hold the result
+    List<IceCreamModel> sortedList;
+
+    // Check the selected value and sort accordingly
+    if (value == 1) { // Ascending order
+        sortedList = insertionSort.sortByFlavor(IceCreamList, false); // false for ascending
+        loadListToTable(sortedList); // Load sorted list into the table
+    } else if (value == 2) { // Descending order
+        sortedList = insertionSort.sortByFlavor(IceCreamList, true); // true for descending
+        loadListToTable(sortedList); // Load sorted list into the table
+    }
+    }//GEN-LAST:event_cbSortByFlavourNameActionPerformed
+
+    private void cbSortByStockQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSortByStockQuantityActionPerformed
+      // Get the selected index from the combo box
+    int value = cbSortByStockQuantity.getSelectedIndex();
+    
+    // Sorted list to hold the result
+    List<IceCreamModel> sortedList;
+
+    // Check the selected value and sort accordingly
+    if (value == 1) { // Ascending order
+        sortedList = mergeSort.sortByStockQuantity(IceCreamList, false); // false for ascending
+        loadListToTable(sortedList); // Load sorted list into the table
+    } else if (value == 2) { // Descending order
+        sortedList = mergeSort.sortByStockQuantity(IceCreamList, true); // true for descending
+        loadListToTable(sortedList); // Load sorted list into the table
+    }
+    }//GEN-LAST:event_cbSortByStockQuantityActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    // Retrieve the input flavor name from the text field
+    String searchValue = tfSearch.getText().trim();
+
+    // Validate if the search field is empty
+    if (searchValue.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please enter a flavor name to search.", "Input Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // Sort the list by flavor name (ascending order)
+        InsertionSort insertionSort = new InsertionSort();
+        List<IceCreamModel> sortedList = insertionSort.sortByFlavor(IceCreamList, false); // false for ascending order
+
+        // Perform the binary search to find the flavor by its name
+        BinarySearch binarySearch = new BinarySearch();
+        IceCreamModel foundIceCream = binarySearch.searchByFlavorName(searchValue, sortedList, 0, sortedList.size() - 1);
+
+        // Clear the existing rows in the table
+        DefaultTableModel model = (DefaultTableModel) tblIceCream.getModel();
+        model.setRowCount(0);  // Clears all existing rows in the table
+
+        // If the flavor is found, add the row to the table
+        if (foundIceCream != null) {
+            model.addRow(new Object[] {
+                foundIceCream.getsilkId(),        // SilkID
+                foundIceCream.getflavourName(),   // Flavor Name
+                foundIceCream.getavailability(),  // Availability
+                foundIceCream.getstockQuantity(), // Stock Quantity
+                foundIceCream.getpricePerScoop(), // Price Per Scoop
+                foundIceCream.getcaloriePerScoop(), // Calorie Per Scoop
+                foundIceCream.getallergens(),     // Allergens
+                foundIceCream.getspecialNotes()   // Special Notes
+            });
+        } else {
+            // If no match is found, show a message
+            JOptionPane.showMessageDialog(null, "Flavor not found.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (Exception e) {
+        // Handle any unexpected errors
+        JOptionPane.showMessageDialog(null, "An error occurred while searching. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnSearchActionPerformed
     
     private void loadListToTable(List<IceCreamModel> IceCreamList) {
         DefaultTableModel model = (DefaultTableModel) tblIceCream.getModel();
@@ -1862,7 +2041,11 @@ public class Silk extends javax.swing.JFrame {
     private javax.swing.JButton btnDELETE;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUPDATE;
+    private javax.swing.JComboBox<String> cbSortByFlavourName;
+    private javax.swing.JComboBox<String> cbSortByID;
+    private javax.swing.JComboBox<String> cbSortByStockQuantity;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -1957,6 +2140,7 @@ public class Silk extends javax.swing.JFrame {
     private javax.swing.JTextField tfFlavourName;
     private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfPricePerScoop;
+    private javax.swing.JTextField tfSearch;
     private javax.swing.JTextField tfSpecialNotes;
     private javax.swing.JTextField tfStockQuantity;
     private javax.swing.JTextField tfUsername;
